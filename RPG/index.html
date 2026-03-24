@@ -79,7 +79,6 @@
       gap: 1.5rem;
     }
 
-    /* ── alert banner ── */
     .alert {
       background: rgba(249,115,22,.08);
       border: 1px solid rgba(249,115,22,.4);
@@ -106,7 +105,6 @@
       line-height: 1.6;
     }
 
-    /* ── section cards ── */
     .section {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -123,7 +121,6 @@
       margin-bottom: 1rem;
     }
 
-    /* step list */
     .steps {
       list-style: none;
       display: flex;
@@ -139,7 +136,7 @@
       gap: .75rem;
       font-size: .8rem;
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     .steps li::before {
@@ -155,7 +152,7 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      margin-top: .05rem;
+      margin-top: .1rem;
     }
 
     code {
@@ -169,7 +166,6 @@
       white-space: nowrap;
     }
 
-    /* controls table */
     .controls-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -215,7 +211,19 @@
       white-space: nowrap;
     }
 
-    /* difficulty */
+    .mechanic-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .mechanic-list li {
+      font-size: .78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
     .diff-table {
       width: 100%;
       border-collapse: collapse;
@@ -247,7 +255,7 @@
       font-size: .65rem;
       font-weight: bold;
     }
-    .tag-easy   { background: rgba(34,197,94,.15);  color: var(--green);  }
+    .tag-easy   { background: rgba(34,197,94,.15);  color: var(--green); }
     .tag-medium { background: rgba(234,179,8,.15);  color: #eab308; }
     .tag-hard   { background: rgba(239,68,68,.15);  color: #ef4444; }
   </style>
@@ -261,40 +269,32 @@
 
   <div class="page">
 
-    <!-- warning -->
     <div class="alert">
       <span class="alert-icon">⚠️</span>
       <div>
         <h2>Jeu en réseau local uniquement</h2>
         <p>
-          Ce jeu utilise des sockets TCP pour connecter deux machines sur le même réseau.
-          Il ne peut pas tourner directement dans le navigateur — lancez-le avec Python
-          sur deux ordinateurs du même réseau Wi-Fi ou filaire.
+          Ce jeu nécessite deux machines sur le même réseau. Le Joueur 1 lance le serveur,
+          le Joueur 2 s'y connecte avec l'IP indiquée. Il ne peut pas tourner dans le navigateur.
         </p>
       </div>
     </div>
 
-    <!-- launch instructions -->
+    <!-- launch -->
     <div class="section">
       <h3>Lancer le jeu</h3>
       <ol class="steps">
+        <li>Installer Python et Pyxel sur les deux machines : <code>pip install pyxel</code></li>
         <li>
-          Assurez-vous que Python et Pyxel sont installés sur les deux machines :
-          <code>pip install pyxel</code>
-        </li>
-        <li>
-          Sur la machine Joueur 1 (serveur), ouvrez un terminal dans le dossier
-          <code>RPG/</code> et lancez :
+          Machine Joueur 1 — ouvrir un terminal dans <code>RPG/</code> et lancer :<br>
           <code>python main.py</code><br>
-          Le terminal affichera l'adresse IP locale (ex. <code>192.168.1.42</code>).
+          L'IP locale s'affiche dans le terminal (ex. <code>192.168.1.42</code>).
         </li>
         <li>
-          Sur la machine Joueur 2 (client), dans le même dossier, lancez avec l'IP du serveur :
+          Machine Joueur 2 — même dossier, lancer avec l'IP du serveur :<br>
           <code>python main.py client 192.168.1.42</code>
         </li>
-        <li>
-          Les deux fenêtres apparaissent dès que la connexion est établie. Bonne partie !
-        </li>
+        <li>Les deux fenêtres démarrent automatiquement dès la connexion établie.</li>
       </ol>
     </div>
 
@@ -323,19 +323,27 @@
       </div>
     </div>
 
+    <!-- mechanics -->
+    <div class="section">
+      <h3>Mécaniques</h3>
+      <ul class="mechanic-list">
+        <li>🍎 Ramassez des pommes pour gagner des vies (<code>+1</code> à chaque collecte)</li>
+        <li>🟦 Les deux joueurs bloquent mutuellement leurs déplacements (collision AABB)</li>
+        <li>⬜ Les obstacles sont générés aléatoirement et partagés entre les deux écrans</li>
+        <li>⏱️ Une pomme non ramassée se replace aléatoirement toutes les 10 secondes</li>
+        <li>💀 Partie terminée quand les vies tombent à 0 — écran <em>GAME OVER</em></li>
+      </ul>
+    </div>
+
     <!-- difficulty -->
     <div class="section">
       <h3>Difficulté</h3>
       <p style="font-size:.78rem;color:var(--muted);margin-bottom:1rem;">
-        Modifier la variable <code>difficulty</code> dans <code>main.py</code> (ligne 29) :
+        Modifier <code>difficulty</code> dans <code>main.py</code> ligne 29 :
       </p>
       <table class="diff-table">
         <thead>
-          <tr>
-            <th>Valeur</th>
-            <th>Difficulté</th>
-            <th>Obstacles</th>
-          </tr>
+          <tr><th>Valeur</th><th>Difficulté</th><th>Obstacles</th></tr>
         </thead>
         <tbody>
           <tr><td><code>10</code></td><td><span class="tag tag-easy">Facile</span></td><td>10 obstacles</td></tr>
