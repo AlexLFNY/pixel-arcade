@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RPG Coopératif</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0b0b14;
+      --surface: #13131f;
+      --border:  #2a2a40;
+      --accent:  #06b6d4;
+      --text:    #e2e2f0;
+      --muted:   #6b6b88;
+      --orange:  #f97316;
+      --green:   #22c55e;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Share Tech Mono', 'Courier New', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom, transparent 0px, transparent 3px,
+        rgba(0,0,0,.07) 3px, rgba(0,0,0,.07) 4px
+      );
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    nav {
+      width: 100%;
+      padding: .9rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .back-btn {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      transition: color .15s;
+    }
+    .back-btn:hover { color: var(--text); }
+
+    .nav-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: .75rem;
+      color: var(--accent);
+    }
+
+    .page {
+      flex: 1;
+      width: 100%;
+      max-width: 760px;
+      padding: 2.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* ── alert banner ── */
+    .alert {
+      background: rgba(249,115,22,.08);
+      border: 1px solid rgba(249,115,22,.4);
+      border-radius: 6px;
+      padding: 1.1rem 1.25rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .alert-icon { font-size: 1.5rem; flex-shrink: 0; line-height: 1; }
+
+    .alert h2 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: .65rem;
+      color: var(--orange);
+      margin-bottom: .5rem;
+      letter-spacing: .05em;
+    }
+
+    .alert p {
+      font-size: .78rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── section cards ── */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+    }
+
+    .section h3 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: .6rem;
+      color: var(--accent);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    /* step list */
+    .steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .85rem;
+      counter-reset: steps;
+    }
+
+    .steps li {
+      counter-increment: steps;
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .steps li::before {
+      content: counter(steps);
+      background: var(--accent);
+      color: #000;
+      font-family: 'Press Start 2P', monospace;
+      font-size: .5rem;
+      width: 1.4rem;
+      height: 1.4rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: .05rem;
+    }
+
+    code {
+      background: #1e1e30;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: .15rem .5rem;
+      font-size: .75rem;
+      color: var(--green);
+      font-family: 'Share Tech Mono', monospace;
+      white-space: nowrap;
+    }
+
+    /* controls table */
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .player-block {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: .85rem;
+    }
+
+    .player-block h4 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: .55rem;
+      margin-bottom: .6rem;
+    }
+    .p1-title { color: #60a5fa; }
+    .p2-title { color: #22d3ee; }
+
+    .player-block ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+    }
+
+    .player-block li {
+      font-size: .72rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    .key {
+      background: #1e1e30;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: .1rem .4rem;
+      font-size: .65rem;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    /* difficulty */
+    .diff-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .78rem;
+    }
+
+    .diff-table th {
+      text-align: left;
+      color: var(--accent);
+      font-weight: normal;
+      padding: .4rem .6rem;
+      border-bottom: 1px solid var(--border);
+      font-size: .65rem;
+      font-family: 'Press Start 2P', monospace;
+    }
+
+    .diff-table td {
+      padding: .5rem .6rem;
+      color: var(--muted);
+      border-bottom: 1px solid rgba(42,42,64,.5);
+    }
+
+    .diff-table tr:last-child td { border-bottom: none; }
+
+    .tag {
+      display: inline-block;
+      padding: .1rem .4rem;
+      border-radius: 3px;
+      font-size: .65rem;
+      font-weight: bold;
+    }
+    .tag-easy   { background: rgba(34,197,94,.15);  color: var(--green);  }
+    .tag-medium { background: rgba(234,179,8,.15);  color: #eab308; }
+    .tag-hard   { background: rgba(239,68,68,.15);  color: #ef4444; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="back-btn" href="../index.html">◀ Accueil</a>
+    <span class="nav-title">⚔️ RPG Coopératif</span>
+  </nav>
+
+  <div class="page">
+
+    <!-- warning -->
+    <div class="alert">
+      <span class="alert-icon">⚠️</span>
+      <div>
+        <h2>Jeu en réseau local uniquement</h2>
+        <p>
+          Ce jeu utilise des sockets TCP pour connecter deux machines sur le même réseau.
+          Il ne peut pas tourner directement dans le navigateur — lancez-le avec Python
+          sur deux ordinateurs du même réseau Wi-Fi ou filaire.
+        </p>
+      </div>
+    </div>
+
+    <!-- launch instructions -->
+    <div class="section">
+      <h3>Lancer le jeu</h3>
+      <ol class="steps">
+        <li>
+          Assurez-vous que Python et Pyxel sont installés sur les deux machines :
+          <code>pip install pyxel</code>
+        </li>
+        <li>
+          Sur la machine Joueur 1 (serveur), ouvrez un terminal dans le dossier
+          <code>RPG/</code> et lancez :
+          <code>python main.py</code><br>
+          Le terminal affichera l'adresse IP locale (ex. <code>192.168.1.42</code>).
+        </li>
+        <li>
+          Sur la machine Joueur 2 (client), dans le même dossier, lancez avec l'IP du serveur :
+          <code>python main.py client 192.168.1.42</code>
+        </li>
+        <li>
+          Les deux fenêtres apparaissent dès que la connexion est établie. Bonne partie !
+        </li>
+      </ol>
+    </div>
+
+    <!-- controls -->
+    <div class="section">
+      <h3>Contrôles</h3>
+      <div class="controls-grid">
+        <div class="player-block">
+          <h4 class="p1-title">Joueur 1 — Serveur (bleu)</h4>
+          <ul>
+            <li><span class="key">W</span> Haut</li>
+            <li><span class="key">S</span> Bas</li>
+            <li><span class="key">A</span> Gauche</li>
+            <li><span class="key">D</span> Droite</li>
+          </ul>
+        </div>
+        <div class="player-block">
+          <h4 class="p2-title">Joueur 2 — Client (cyan)</h4>
+          <ul>
+            <li><span class="key">↑</span> Haut</li>
+            <li><span class="key">↓</span> Bas</li>
+            <li><span class="key">←</span> Gauche</li>
+            <li><span class="key">→</span> Droite</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- difficulty -->
+    <div class="section">
+      <h3>Difficulté</h3>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:1rem;">
+        Modifier la variable <code>difficulty</code> dans <code>main.py</code> (ligne 29) :
+      </p>
+      <table class="diff-table">
+        <thead>
+          <tr>
+            <th>Valeur</th>
+            <th>Difficulté</th>
+            <th>Obstacles</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>10</code></td><td><span class="tag tag-easy">Facile</span></td><td>10 obstacles</td></tr>
+          <tr><td><code>5</code></td><td><span class="tag tag-medium">Moyen</span></td><td>5 obstacles</td></tr>
+          <tr><td><code>2</code></td><td><span class="tag tag-hard">Difficile</span></td><td>2 obstacles</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</body>
+</html>
