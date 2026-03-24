@@ -14,8 +14,7 @@
       --accent:  #06b6d4;
       --text:    #e2e2f0;
       --muted:   #6b6b88;
-      --orange:  #f97316;
-      --green:   #22c55e;
+      --accent2: #7c3aed;
     }
 
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
@@ -66,139 +65,101 @@
     .nav-title {
       font-family: 'Press Start 2P', monospace;
       font-size: .75rem;
-      color: var(--accent);
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .page {
       flex: 1;
       width: 100%;
-      max-width: 760px;
-      padding: 2.5rem 1.5rem;
+      max-width: 900px;
+      padding: 2rem 1.5rem;
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 1.5rem;
     }
 
-    .alert {
-      background: rgba(249,115,22,.08);
-      border: 1px solid rgba(249,115,22,.4);
+    .game-wrapper {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-height: 70vh;
+      background: #000;
+      border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 1.1rem 1.25rem;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(6,182,212,.2);
+      position: relative;
+    }
+
+    .game-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
       display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-    }
-
-    .alert-icon { font-size: 1.5rem; flex-shrink: 0; line-height: 1; }
-
-    .alert h2 {
-      font-family: 'Press Start 2P', monospace;
-      font-size: .65rem;
-      color: var(--orange);
-      margin-bottom: .5rem;
-      letter-spacing: .05em;
-    }
-
-    .alert p {
-      font-size: .78rem;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .75rem;
       color: var(--muted);
-      line-height: 1.6;
+      font-size: .8rem;
+      pointer-events: none;
+      background: #000;
     }
 
-    .section {
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .info-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .info-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 6px;
-      padding: 1.25rem;
+      padding: 1rem;
     }
 
-    .section h3 {
+    .info-card h3 {
       font-family: 'Press Start 2P', monospace;
-      font-size: .6rem;
+      font-size: .55rem;
       color: var(--accent);
       letter-spacing: .1em;
       text-transform: uppercase;
-      margin-bottom: 1rem;
+      margin-bottom: .75rem;
     }
 
-    .steps {
+    .info-card ul {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: .85rem;
-      counter-reset: steps;
-    }
-
-    .steps li {
-      counter-increment: steps;
-      display: flex;
-      align-items: flex-start;
-      gap: .75rem;
-      font-size: .8rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .steps li::before {
-      content: counter(steps);
-      background: var(--accent);
-      color: #000;
-      font-family: 'Press Start 2P', monospace;
-      font-size: .5rem;
-      width: 1.4rem;
-      height: 1.4rem;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: .1rem;
-    }
-
-    code {
-      background: #1e1e30;
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      padding: .15rem .5rem;
-      font-size: .75rem;
-      color: var(--green);
-      font-family: 'Share Tech Mono', monospace;
-      white-space: nowrap;
-    }
-
-    .controls-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .player-block {
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: .85rem;
-    }
-
-    .player-block h4 {
-      font-family: 'Press Start 2P', monospace;
-      font-size: .55rem;
-      margin-bottom: .6rem;
-    }
-    .p1-title { color: #60a5fa; }
-    .p2-title { color: #22d3ee; }
-
-    .player-block ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: .35rem;
-    }
-
-    .player-block li {
-      font-size: .72rem;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
       gap: .4rem;
+    }
+
+    .info-card li {
+      font-size: .75rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: .5rem;
     }
 
     .key {
@@ -210,54 +171,6 @@
       color: var(--accent);
       white-space: nowrap;
     }
-
-    .mechanic-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: .5rem;
-    }
-
-    .mechanic-list li {
-      font-size: .78rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .diff-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: .78rem;
-    }
-
-    .diff-table th {
-      text-align: left;
-      color: var(--accent);
-      font-weight: normal;
-      padding: .4rem .6rem;
-      border-bottom: 1px solid var(--border);
-      font-size: .65rem;
-      font-family: 'Press Start 2P', monospace;
-    }
-
-    .diff-table td {
-      padding: .5rem .6rem;
-      color: var(--muted);
-      border-bottom: 1px solid rgba(42,42,64,.5);
-    }
-
-    .diff-table tr:last-child td { border-bottom: none; }
-
-    .tag {
-      display: inline-block;
-      padding: .1rem .4rem;
-      border-radius: 3px;
-      font-size: .65rem;
-      font-weight: bold;
-    }
-    .tag-easy   { background: rgba(34,197,94,.15);  color: var(--green); }
-    .tag-medium { background: rgba(234,179,8,.15);  color: #eab308; }
-    .tag-hard   { background: rgba(239,68,68,.15);  color: #ef4444; }
   </style>
 </head>
 <body>
@@ -269,91 +182,52 @@
 
   <div class="page">
 
-    <div class="alert">
-      <span class="alert-icon">⚠️</span>
-      <div>
-        <h2>Jeu en réseau local uniquement</h2>
-        <p>
-          Ce jeu nécessite deux machines sur le même réseau. Le Joueur 1 lance le serveur,
-          le Joueur 2 s'y connecte avec l'IP indiquée. Il ne peut pas tourner dans le navigateur.
-        </p>
+    <div class="game-wrapper" id="game-wrapper">
+      <div class="loading-overlay" id="loading">
+        <div class="spinner"></div>
+        <span>Chargement du moteur Pyxel…</span>
       </div>
+      <iframe id="game-frame" src="game.html" allowfullscreen
+              onload="document.getElementById('loading').style.display='none'"></iframe>
     </div>
 
-    <!-- launch -->
-    <div class="section">
-      <h3>Lancer le jeu</h3>
-      <ol class="steps">
-        <li>Installer Python et Pyxel sur les deux machines : <code>pip install pyxel</code></li>
-        <li>
-          Machine Joueur 1 — ouvrir un terminal dans <code>RPG/</code> et lancer :<br>
-          <code>python main.py</code><br>
-          L'IP locale s'affiche dans le terminal (ex. <code>192.168.1.42</code>).
-        </li>
-        <li>
-          Machine Joueur 2 — même dossier, lancer avec l'IP du serveur :<br>
-          <code>python main.py client 192.168.1.42</code>
-        </li>
-        <li>Les deux fenêtres démarrent automatiquement dès la connexion établie.</li>
-      </ol>
-    </div>
-
-    <!-- controls -->
-    <div class="section">
-      <h3>Contrôles</h3>
-      <div class="controls-grid">
-        <div class="player-block">
-          <h4 class="p1-title">Joueur 1 — Serveur (bleu)</h4>
-          <ul>
-            <li><span class="key">W</span> Haut</li>
-            <li><span class="key">S</span> Bas</li>
-            <li><span class="key">A</span> Gauche</li>
-            <li><span class="key">D</span> Droite</li>
-          </ul>
-        </div>
-        <div class="player-block">
-          <h4 class="p2-title">Joueur 2 — Client (cyan)</h4>
-          <ul>
-            <li><span class="key">↑</span> Haut</li>
-            <li><span class="key">↓</span> Bas</li>
-            <li><span class="key">←</span> Gauche</li>
-            <li><span class="key">→</span> Droite</li>
-          </ul>
-        </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>Joueur 1 (bleu)</h3>
+        <ul>
+          <li><span class="key">W</span> Haut</li>
+          <li><span class="key">S</span> Bas</li>
+          <li><span class="key">A</span> Gauche</li>
+          <li><span class="key">D</span> Droite</li>
+        </ul>
       </div>
-    </div>
-
-    <!-- mechanics -->
-    <div class="section">
-      <h3>Mécaniques</h3>
-      <ul class="mechanic-list">
-        <li>🍎 Ramassez des pommes pour gagner des vies (<code>+1</code> à chaque collecte)</li>
-        <li>🟦 Les deux joueurs bloquent mutuellement leurs déplacements (collision AABB)</li>
-        <li>⬜ Les obstacles sont générés aléatoirement et partagés entre les deux écrans</li>
-        <li>⏱️ Une pomme non ramassée se replace aléatoirement toutes les 10 secondes</li>
-        <li>💀 Partie terminée quand les vies tombent à 0 — écran <em>GAME OVER</em></li>
-      </ul>
-    </div>
-
-    <!-- difficulty -->
-    <div class="section">
-      <h3>Difficulté</h3>
-      <p style="font-size:.78rem;color:var(--muted);margin-bottom:1rem;">
-        Modifier <code>difficulty</code> dans <code>main.py</code> ligne 29 :
-      </p>
-      <table class="diff-table">
-        <thead>
-          <tr><th>Valeur</th><th>Difficulté</th><th>Obstacles</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><code>10</code></td><td><span class="tag tag-easy">Facile</span></td><td>10 obstacles</td></tr>
-          <tr><td><code>5</code></td><td><span class="tag tag-medium">Moyen</span></td><td>5 obstacles</td></tr>
-          <tr><td><code>2</code></td><td><span class="tag tag-hard">Difficile</span></td><td>2 obstacles</td></tr>
-        </tbody>
-      </table>
+      <div class="info-card">
+        <h3>Joueur 2 (cyan)</h3>
+        <ul>
+          <li><span class="key">↑</span> Haut</li>
+          <li><span class="key">↓</span> Bas</li>
+          <li><span class="key">←</span> Gauche</li>
+          <li><span class="key">→</span> Droite</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>Objectif</h3>
+        <ul>
+          <li>🍎 Ramassez des pommes (+1 vie)</li>
+          <li>⬜ Évitez les obstacles</li>
+          <li>🟦 Les joueurs se bloquent mutuellement</li>
+          <li>💀 Game over à 0 vies</li>
+        </ul>
+      </div>
     </div>
 
   </div>
+
+  <script>
+    setTimeout(() => {
+      document.getElementById('loading').style.display = 'none';
+    }, 20000);
+  </script>
 
 </body>
 </html>
