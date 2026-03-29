@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Go aw!</title>
+  <title>Escape the Maze</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --bg:#0b0b14; --surface:#13131f; --border:#2a2a40; --accent:#22c55e; --accent2:#f97316; --text:#e2e2f0; --muted:#6b6b88; }
+    :root { --bg:#0b0b14; --surface:#13131f; --border:#2a2a40; --accent:#a855f7; --accent2:#22c55e; --text:#e2e2f0; --muted:#6b6b88; }
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
     body { background:var(--bg); color:var(--text); font-family:'Share Tech Mono','Courier New',monospace; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
     nav { width:100%; padding:.9rem 1.5rem; display:flex; align-items:center; gap:1rem; border-bottom:1px solid var(--border); background:var(--surface); }
@@ -14,7 +14,7 @@
     .back-btn:hover { color:var(--text); }
     .nav-title { font-family:'Press Start 2P',monospace; font-size:.75rem; background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
     .page { flex:1; width:100%; max-width:900px; padding:2rem 1.5rem; display:flex; flex-direction:column; align-items:center; gap:1.5rem; }
-    .game-wrapper { width:100%; aspect-ratio:1/1; max-height:70vh; background:#000; border:1px solid var(--border); border-radius:6px; overflow:hidden; box-shadow:0 0 30px rgba(34,197,94,.2); position:relative; }
+    .game-wrapper { width:100%; aspect-ratio:16/13; max-height:70vh; background:#000; border:1px solid var(--border); border-radius:6px; overflow:hidden; box-shadow:0 0 30px rgba(168,85,247,.2); position:relative; }
     .game-wrapper iframe { width:100%; height:100%; border:none; display:block; }
     .loading-overlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.75rem; color:var(--muted); font-size:.8rem; pointer-events:none; background:#000; }
     .spinner { width:32px; height:32px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
@@ -30,35 +30,33 @@
 <body>
   <nav>
     <a class="back-btn" href="../index.html">◀ Accueil</a>
-    <span class="nav-title">🚗 Go aw!</span>
+    <span class="nav-title">🧩 Escape the Maze</span>
   </nav>
   <div class="page">
     <div class="game-wrapper" id="game-wrapper">
-      <div class="loading-overlay" id="loading">
-        <div class="spinner"></div>
-        <span>Chargement du moteur Pyxel…</span>
-      </div>
+      <div class="loading-overlay" id="loading"><div class="spinner"></div><span>Chargement du moteur Pyxel…</span></div>
       <iframe src="game.html" allowfullscreen onload="document.getElementById('loading').style.display='none'"></iframe>
     </div>
     <div class="info-grid">
       <div class="info-card">
         <h3>Contrôles</h3>
         <ul>
-          <li><span class="key">↑ ↓ ← →</span> Déplacer la voiture</li>
-          <li><span class="key">ESPACE</span> Recommencer</li>
+          <li><span class="key">↑ ↓ ← →</span> Se déplacer</li>
+          <li><span class="key">1</span> <span class="key">2</span> <span class="key">3</span> Répondre</li>
+          <li><span class="key">ESPACE</span> Démarrer</li>
         </ul>
       </div>
       <div class="info-card">
         <h3>Objectif</h3>
         <ul>
-          <li>🚗 Échapper aux voitures ennemies</li>
-          <li>❤️ 3 vies — chaque collision en enlève une</li>
-          <li>🤖 Les ennemis vous poursuivent</li>
-          <li>💀 Game Over après 3 collisions</li>
+          <li>🚪 Les portes oranges posent une devinette</li>
+          <li>✅ Bonne réponse = porte ouverte</li>
+          <li>⏱️ 60 secondes pour atteindre la sortie</li>
+          <li>🏁 Atteignez la case OUT !</li>
         </ul>
       </div>
     </div>
   </div>
-  <script>setTimeout(()=>{ document.getElementById('loading').style.display='none'; }, 20000);</script>
+  <script>setTimeout(()=>{ document.getElementById('loading').style.display='none'; },20000);</script>
 </body>
 </html>

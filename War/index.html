@@ -9,7 +9,6 @@
     :root { --bg:#0b0b14; --surface:#13131f; --border:#2a2a40; --accent:#ef4444; --accent2:#f59e0b; --text:#e2e2f0; --muted:#6b6b88; }
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
     body { background:var(--bg); color:var(--text); font-family:'Share Tech Mono','Courier New',monospace; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
-    body::before { content:''; position:fixed; inset:0; background:repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,rgba(0,0,0,.07) 3px,rgba(0,0,0,.07) 4px); pointer-events:none; z-index:100; }
     nav { width:100%; padding:.9rem 1.5rem; display:flex; align-items:center; gap:1rem; border-bottom:1px solid var(--border); background:var(--surface); }
     .back-btn { text-decoration:none; color:var(--muted); font-size:.75rem; transition:color .15s; }
     .back-btn:hover { color:var(--text); }
