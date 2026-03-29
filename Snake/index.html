@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg:#0b0b14; --surface:#13131f; --border:#2a2a40; --accent:#22c55e; --accent2:#84cc16; --text:#e2e2f0; --muted:#6b6b88; }
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
+    body { background:var(--bg); color:var(--text); font-family:'Share Tech Mono','Courier New',monospace; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+    nav { width:100%; padding:.9rem 1.5rem; display:flex; align-items:center; gap:1rem; border-bottom:1px solid var(--border); background:var(--surface); }
+    .back-btn { text-decoration:none; color:var(--muted); font-size:.75rem; transition:color .15s; }
+    .back-btn:hover { color:var(--text); }
+    .nav-title { font-family:'Press Start 2P',monospace; font-size:.75rem; background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .page { flex:1; width:100%; max-width:900px; padding:2rem 1.5rem; display:flex; flex-direction:column; align-items:center; gap:1.5rem; }
+    .game-wrapper { width:100%; aspect-ratio:4/3; max-height:70vh; background:#000; border:1px solid var(--border); border-radius:6px; overflow:hidden; box-shadow:0 0 30px rgba(34,197,94,.2); position:relative; }
+    .game-wrapper iframe { width:100%; height:100%; border:none; display:block; }
+    .loading-overlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.75rem; color:var(--muted); font-size:.8rem; pointer-events:none; background:#000; }
+    .spinner { width:32px; height:32px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .info-grid { width:100%; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; }
+    .info-card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:1rem; }
+    .info-card h3 { font-family:'Press Start 2P',monospace; font-size:.55rem; color:var(--accent); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.75rem; }
+    .info-card ul { list-style:none; display:flex; flex-direction:column; gap:.4rem; }
+    .info-card li { font-size:.75rem; color:var(--muted); display:flex; align-items:center; gap:.5rem; }
+    .key { background:#1e1e30; border:1px solid var(--border); border-radius:3px; padding:.1rem .4rem; font-size:.65rem; color:var(--accent); white-space:nowrap; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="back-btn" href="../index.html">◀ Accueil</a>
+    <span class="nav-title">🐍 Snake</span>
+  </nav>
+  <div class="page">
+    <div class="game-wrapper" id="game-wrapper">
+      <div class="loading-overlay" id="loading">
+        <div class="spinner"></div>
+        <span>Chargement du moteur Pyxel…</span>
+      </div>
+      <iframe src="game.html" allowfullscreen onload="document.getElementById('loading').style.display='none'"></iframe>
+    </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>Contrôles</h3>
+        <ul>
+          <li><span class="key">↑ ↓ ← →</span> Diriger le serpent</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>Objectif</h3>
+        <ul>
+          <li>🍎 Manger les pommes vertes pour grandir</li>
+          <li>💀 Éviter les mauvaises pommes (rétrécissent)</li>
+          <li>🏆 Atteindre la longueur 12 pour gagner</li>
+          <li>⚠️ Ne pas sortir de l'écran</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script>setTimeout(()=>{ document.getElementById('loading').style.display='none'; }, 20000);</script>
+</body>
+</html>
