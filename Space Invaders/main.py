@@ -151,7 +151,8 @@ def update():
             death_timer -= 1
             return
         return
-        
+    if pyxel.btn(pyxel.KEY_Q):
+        pyxel.stop()
         
     if win == True:
         y-=5
@@ -380,6 +381,7 @@ def draw():
         pyxel.text(40,150, "UH OH! YOU HAVE BEEN HIT WITH THE MYSTERY ASTEROID... YOUR MOVEMENT HAS BEEN AFFECTED",7)
     elif immobilized > 0:
         pyxel.text(90,150, "YOU HAVE BEEN IMMOBILIZED DUE TO CRITICAL DAMAGES TO YOUR SPACECRAFT!",7)
+
 pyxel.playm(0, loop=True)
 
 pyxel.run(update,draw)
